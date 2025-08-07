@@ -3,9 +3,7 @@
 export default async (request, context) => {
   const data = {
     timestamp: new Date().toISOString(),
-    ip: request.headers.get("x-nf-client-connection-ip") ||
-        request.headers.get("x-forwarded-for") ||
-        "unknown",
+    ip: extractClientIp(request),
     userAgent: request.headers.get("user-agent") || "unknown",
     referrer: request.headers.get("referer") || "none",
   };
@@ -26,3 +24,16 @@ export default async (request, context) => {
   export const config = {
     path: "/*",
 };
+
+function extractClientIp(request) {
+  const clientIp = request.headers.get("x-nf-client-connection-ip");
+  if (clientIp) return clientIp;
+
+  const xff = request.headers.get("x-forwarded-for");
+  if (xff) {
+    // Handle comma-separated list and trim
+    return xff.split(",")[0].trim();
+  }
+
+  return "unknown";
+}
