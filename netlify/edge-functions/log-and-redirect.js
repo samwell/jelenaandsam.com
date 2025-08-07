@@ -3,7 +3,9 @@
 export default async (request, context) => {
   const data = {
     timestamp: new Date().toISOString(),
-    ip: request.headers.get("x-nf-client-connection-ip") || "unknown",
+    ip: request.headers.get("x-nf-client-connection-ip") ||
+        request.headers.get("x-forwarded-for") ||
+        "unknown",
     userAgent: request.headers.get("user-agent") || "unknown",
     referrer: request.headers.get("referer") || "none",
   };
