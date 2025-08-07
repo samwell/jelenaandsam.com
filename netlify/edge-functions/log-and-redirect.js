@@ -1,6 +1,6 @@
 // netlify/edge-functions/log-and-redirect.js
 
-export default async (request, context) => {]
+export default async (request, context) => {
   const now = new Date();
 
   // Convert to Central Time using `toLocaleString`
