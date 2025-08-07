@@ -1,8 +1,16 @@
 // netlify/edge-functions/log-and-redirect.js
 
-export default async (request, context) => {
+export default async (request, context) => {]
+  const now = new Date();
+
+  // Convert to Central Time using `toLocaleString`
+  const centralTime = now.toLocaleString("en-US", {
+    timeZone: "America/Chicago",
+    hour12: false,
+  });
+
   const data = {
-    timestamp: new Date().toISOString(),
+    timestamp: centralTime,
     ip: request.headers.get("x-nf-client-connection-ip") ||
         request.headers.get("x-forwarded-for") ||
         "unknown",
